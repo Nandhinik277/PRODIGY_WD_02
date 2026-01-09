@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quantum Clock Dashboard</title>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- tsParticles Library -->
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="text-white flex flex-col h-screen overflow-hidden">
+
+<!-- HEADER -->
+<header class="fixed top-0 w-full z-50 glass-panel border-b border-white/10">
+    <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <i class="bi bi-cpu text-cyan-400 text-2xl animate-pulse"></i>
+            <h1 class="text-lg md:text-xl font-bold tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500">
+                Quantum<span class="font-light text-white/80">Clock</span>
+            </h1>
+        </div>
+        <nav class="flex bg-black/20 rounded-lg p-1">
+            <button onclick="switchTab('clock')" id="btn-clock" class="px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-300 bg-white/10 text-cyan-300 shadow-lg">
+                <i class="bi bi-clock me-1"></i> Clock
+            </button>
+            <button onclick="switchTab('stopwatch')" id="btn-stopwatch" class="px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-300 text-gray-400 hover:text-white hover:bg-white/5">
+                <i class="bi bi-stopwatch me-1"></i> Stopwatch
+            </button>
+        </nav>
+    </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="flex-grow flex items-center justify-center p-4 pt-20 pb-16 relative w-full overflow-y-auto custom-scrollbar">
+    <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-600/20 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-cyan-600/20 rounded-full blur-[100px] pointer-events-none"></div>
+
+    <div class="w-full max-w-2xl mx-auto">
+        <!-- CLOCK -->
+        <div id="clock-section" class="tab-content active flex-col gap-6">
+            <div class="glass-panel rounded-2xl p-8 md:p-12 text-center relative overflow-hidden group hover:border-cyan-500/30 transition-colors duration-500">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50"></div>
+                <div class="mb-2 flex justify-center items-center gap-2 text-cyan-300/70 text-sm uppercase tracking-[0.2em]">
+                    <i class="bi bi-geo-alt-fill"></i> Local Time
+                </div>
+                <div class="font-mono-digit text-6xl md:text-8xl font-bold text-white neon-text-cyan mb-2" id="main-time">
+                    00:00:00
+                </div>
+                <div class="text-xl md:text-2xl text-gray-400 font-light" id="main-date">
+                    Loading Date...
+                </div>
+                <div class="absolute top-4 right-4 md:top-6 md:right-6">
+                   <button id="format-toggle-btn" class="text-xs font-bold px-3 py-1 rounded border border-white/20 bg-white/5 hover:bg-cyan-500/20 hover:border-cyan-400 hover:text-cyan-300 transition-all">
+    24H
+</button>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- STOPWATCH -->
+        <div id="stopwatch-section" class="tab-content flex-col gap-6">
+            <div class="glass-panel rounded-2xl p-10 text-center border-t-4 border-t-pink-500">
+                <div class="mb-4 text-pink-300/70 text-sm uppercase tracking-[0.2em] flex justify-center items-center gap-2">
+                    <i class="bi bi-stopwatch-fill"></i> Chronometer
+                </div>
+                <div class="font-mono-digit text-6xl md:text-8xl font-bold text-white mb-6 tabular-nums" id="sw-display">
+                    00:00:00
+                </div>
+                <div class="flex justify-center gap-4 flex-wrap">
+                    <button id="btn-sw-start" onclick="startStopwatch()" class="flex items-center gap-2 px-8 py-3 rounded-xl bg-green-600 text-white font-semibold shadow-lg hover:bg-green-500 transition-all duration-300 active:scale-95">
+                        <i class="bi bi-play-fill text-xl"></i> Start
+                    </button>
+                    <button id="btn-sw-pause" onclick="pauseStopwatch()" class="hidden flex items-center gap-2 px-8 py-3 rounded-xl bg-yellow-600 text-white font-semibold shadow-lg hover:bg-yellow-500 transition-all duration-300 active:scale-95">
+                        <i class="bi bi-pause-fill text-xl"></i> Pause
+                    </button>
+                    <button id="btn-sw-lap" disabled class="flex items-center gap-2 px-8 py-3 rounded-xl bg-cyan-600 text-white font-semibold shadow-lg hover:bg-cyan-500 transition-all duration-300 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed">
+    <i class="bi bi-flag-fill text-xl"></i> Lap
+</button>
+
+                    <button onclick="resetStopwatch()" id="btn-sw-reset" disabled class="flex items-center gap-2 px-8 py-3 rounded-xl bg-red-600 text-white font-semibold shadow-lg hover:bg-red-500 transition-all duration-300 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed">
+                        <i class="bi bi-stop-fill text-xl"></i> Stop
+                    </button>
+                </div>
+            </div>
+            <div class="glass-panel rounded-2xl p-0 overflow-hidden flex flex-col max-h-60">
+                <div class="p-4 bg-white/5 border-b border-white/10 flex justify-between items-center">
+                    <h3 class="font-semibold text-gray-300"><i class="bi bi-list-ol me-2"></i>Laps</h3>
+                    <span id="lap-count" class="text-xs bg-white/10 px-2 py-0.5 rounded text-gray-400">0 Laps</span>
+                </div>
+                <div id="laps-list" class="overflow-y-auto custom-scrollbar p-2 space-y-1 h-full">
+                    <div class="text-center py-8 text-gray-500 text-sm italic">No laps recorded yet</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="fixed bottom-0 w-full glass-panel border-t border-white/10 z-40">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
+        <div>&copy; 2026 Quantum Systems.</div>
+        <div class="mt-1 md:mt-0 flex gap-4">
+            <a href="#" class="hover:text-cyan-400 transition-colors">Privacy</a>
+            <a href="#" class="hover:text-cyan-400 transition-colors">Settings</a>
+            <span class="flex items-center gap-1">
+                <i class="bi bi-battery-charging"></i> System Stable
+            </span>
+        </div>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
