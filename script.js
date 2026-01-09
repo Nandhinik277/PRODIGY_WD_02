@@ -208,31 +208,76 @@ document.getElementById('btn-stopwatch').addEventListener('click', () => switchT
 
 
 tsParticles.load("tsparticles", {
-    fpsLimit: 60,
-    background: {
-        color: "transparent"
+  fullScreen: { enable: false },
+
+  background: {
+    color: "transparent"
+  },
+
+  fpsLimit: 60,
+
+  particles: {
+    number: {
+      value: 70,
+      density: {
+        enable: true,
+        area: 800
+      }
     },
-    particles: {
-        number: {
-            value: 80,
-            density: { enable: true, area: 800 }
-        },
-        color: { value: "#10b981" }, // Emerald green particles
-        shape: { type: "circle" },
-        opacity: { value: 0.5, random: true },
-        size: { value: { min: 1, max: 3 } },
-        move: { enable: true, speed: 1.5, direction: "none", outModes: { default: "bounce" } },
-        links: { enable: true, distance: 120, color: "#10b981", opacity: 0.3, width: 1 }
+
+    color: {
+      value: ["#22d3ee", "#a855f7", "#ec4899"]
     },
-    interactivity: {
-        events: {
-            onHover: { enable: true, mode: "grab" },
-            onClick: { enable: true, mode: "push" }
-        },
-        modes: {
-            grab: { distance: 140, links: { opacity: 0.5 } },
-            push: { quantity: 4 }
+
+    shape: {
+      type: "circle"
+    },
+
+    opacity: {
+      value: 0.6
+    },
+
+    size: {
+      value: { min: 1, max: 3 }
+    },
+
+    links: {
+      enable: true,
+      distance: 140,
+      color: "#22d3ee",
+      opacity: 0.3,
+      width: 1
+    },
+
+    move: {
+      enable: true,
+      speed: 1.2,
+      direction: "none",
+      random: false,
+      straight: false,
+      outModes: {
+        default: "out"
+      }
+    }
+  },
+
+  interactivity: {
+    events: {
+      onHover: {
+        enable: true,
+        mode: "grab"
+      },
+      resize: true
+    },
+    modes: {
+      grab: {
+        distance: 160,
+        links: {
+          opacity: 0.6
         }
-    },
-    detectRetina: true
+      }
+    }
+  },
+
+  detectRetina: true
 });
