@@ -210,23 +210,17 @@ document.getElementById('btn-stopwatch').addEventListener('click', () => switchT
 tsParticles.load("tsparticles", {
   fullScreen: { enable: false },
 
-  background: {
-    color: "transparent"
-  },
-
-  fpsLimit: 60,
-
   particles: {
     number: {
-      value: 70,
+      value: 25,
       density: {
         enable: true,
-        area: 800
+        area: 1200
       }
     },
 
     color: {
-      value: ["#22d3ee", "#a855f7", "#ec4899"]
+      value: "#ffffff"
     },
 
     shape: {
@@ -234,26 +228,24 @@ tsParticles.load("tsparticles", {
     },
 
     opacity: {
-      value: 0.6
+      value: { min: 0.02, max: 0.06 }, // almost invisible
+      animation: {
+        enable: true,
+        speed: 0.3,
+        minimumValue: 0.01,
+        sync: false
+      }
     },
 
     size: {
-      value: { min: 1, max: 3 }
-    },
-
-    links: {
-      enable: true,
-      distance: 140,
-      color: "#22d3ee",
-      opacity: 0.3,
-      width: 1
+      value: { min: 1, max: 2 }
     },
 
     move: {
       enable: true,
-      speed: 1.2,
+      speed: 0.05, // very slow shimmer
       direction: "none",
-      random: false,
+      random: true,
       straight: false,
       outModes: {
         default: "out"
@@ -264,17 +256,10 @@ tsParticles.load("tsparticles", {
   interactivity: {
     events: {
       onHover: {
-        enable: true,
-        mode: "grab"
+        enable: false
       },
-      resize: true
-    },
-    modes: {
-      grab: {
-        distance: 160,
-        links: {
-          opacity: 0.6
-        }
+      onClick: {
+        enable: false
       }
     }
   },
